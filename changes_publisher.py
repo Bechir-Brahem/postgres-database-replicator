@@ -25,10 +25,11 @@ def publish_queue(payload):
 
 
 def handle_notify():
-    print(' [x] POSTGRES: notification received')
+    # print(' [x] POSTGRES: notification received')
     conn.poll()
     for notify in conn.notifies:
-        publish_queue(notify.payload)
+        channel.basic_publish(exchange='replication', routing_key='', body=notify.payload)
+        # publish_queue(notify.payload)
 
     conn.notifies.clear()
 
